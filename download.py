@@ -3,6 +3,7 @@ from tkinter import ttk
 from random import randint
 from pathlib import Path
 import sys
+from tkinter.messagebox import showerror
 
 class Bar:
     def __init__(self, apps, name_file, row, list_file, root, download):

@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter.messagebox import showerror
 from app import App
+from tkinter.messagebox import showerror
 
 # def report_callback_exception(self, exc, val, tb):
 #         showerror("Error", message=str(val))

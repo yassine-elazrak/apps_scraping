@@ -4,11 +4,14 @@ from tools import Input
 from functools import reduce
 from pprint import pprint
 import tkinter.font as TkFont
+from tkinter.messagebox import showerror
 
 class Box:
     def __init__(self, apps=None):
         self.master = apps
         self.Words = []
+        self.var_clean = IntVar()
+        self.valuer_clean = 0
         self.font_butt = TkFont.Font(family='Helvetica', size=10, weight=TkFont.BOLD)
 
 
@@ -25,12 +28,14 @@ class Box:
 
     def get_all(self):
         print("keys=>>", self.Words)
+        self.valuer_clean = self.var_clean.get()
         return self.Words
         
     def clear_all(self):
         self.Words.clear()
         self.list_box.delete(0,END)
         self.data.ft_delete(0,END)
+        self.var_clean.set(0)
 
 
     def creat(self):
@@ -53,6 +58,8 @@ class Box:
         self.button_remove = Button(
         self.field2, text=' remove element ',font=self.font_butt, bg='red', command=self.remove)
         self.button_remove.grid(row=0, column=8,sticky='W',  padx=0,pady=1, ipadx=5, ipady=5)####
+        Checkbutton(self.field2, text=str("clean data") ,variable=self.var_clean, bg="bisque" , font =("Courier", 14, "italic")).grid(row=0, column=9, padx=7, pady=0)
+
 #####run the
         # self.button_clear = Button(self.field2, text=' clear all ',font=self.font_butt, bg='red', command=self.add)
         # self.button_clear.grid(row=0, column=9,sticky='w',  padx=5,pady=1, ipadx=5, ipady=5)###

@@ -6,6 +6,8 @@ from pprint import pprint
 from threading import Timer, Thread
 from tkinter.messagebox import *
 import os
+from tkinter.messagebox import showerror
+
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from touch import touch
@@ -67,14 +69,19 @@ class Exec:
         self.box = objs["Field"].fieldname
         self.arena = objs["Home"].body.box
         self.download = objs["Download"]
+        self.clean = objs["Clean"]
+        self.nb = objs["Nb"]
         self.keys = []
         self.custom = []
         self.since = ""
         self.until = ""
+        self.number_tweet = 100
         self.name_file = ""
         self.list_thread = []
         self.list_file = []
         self.list_time = []
+        self.dict_clean = {}
+        self.flg_clean = 0
         self.start = True
         # self.index_folder = id_folder
         self.index = index
@@ -84,6 +91,9 @@ class Exec:
         self.name_file = self.path.get_all()
         self.custom = self.box.get_all()
         self.keys = self.arena.get_all()
+        self.number_tweet = self.nb.get_all()
+        self.dict_clean = self.clean.get_all()
+        self.flg_clean = self.arena.valuer_clean
     #    self.clear_all()
 
     def clear_all(self):
@@ -117,7 +127,7 @@ class Exec:
         self.twint = Config_twint(keys=keys , since=since , \
             until=until, outfile=outfile)
         self.twint.run()
-        
+
 
     def join_files(self):
         list_df = []

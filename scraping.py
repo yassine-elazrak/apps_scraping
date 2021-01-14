@@ -4,6 +4,7 @@ import datetime
 import pandas as pd
 # except RuntimeError:
 #     import sys; sys.exit() from threading import Timer, Thread
+from tkinter.messagebox import showerror
 
 class File:
     def __init__(self, list_file=[],name_file="", custom = []):

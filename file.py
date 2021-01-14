@@ -6,6 +6,7 @@ import os
 from tkinter import filedialog
 import tkinter.font as TkFont
 # from main import apps
+from tkinter.messagebox import showerror
 
 class DIR:
     def __init__(self, apps=None):

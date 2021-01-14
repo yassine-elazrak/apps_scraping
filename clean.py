@@ -1,6 +1,7 @@
 # import texthero as hero
 import pandas as pd
 import demoji
+from tkinter.messagebox import showerror
 # from texthero import stopwords
 # from texthero import preprocessing
 from deep_translator import GoogleTranslator
@@ -134,10 +135,11 @@ class Trans:
         self.fr.set(0)
         self.en.set(0)
 
-    def get_all(self):
+    def save(self):
         self.dict["en"] = self.en.get()
         self.dict["fr"] = self.fr.get()
         self.dict["ar"] = self.ar.get()
+    def get_all(self):
         return self.dict
 
 
@@ -188,11 +190,11 @@ class Emoji:
     def ft_remove(self):
         self.replace.set(0)
         self.stay.set(0)
-
-    def get_all(self):
+    def save(self):
         self.dict["remove"] = self.remove.get()
         self.dict["stay"] = self.stay.get()
         self.dict["replace"] = self.replace.get()
+    def get_all(self):
         return self.dict
 
     def clear_all(self):
@@ -262,7 +264,7 @@ class Word:
     #     pass
 # ["name" , "lowercase"  , "diacritics" , "fillna" , "stem" , "digit" , "punctuation" , "urls" , "whitespace"]:
 
-    def get_all(self):
+    def save(self):
         self.dict["punctuation"] = self.punctuation.get()
         self.dict["name"] = self.name.get()
         self.dict["stem"] = self.stem.get()
@@ -272,6 +274,8 @@ class Word:
         self.dict["urls"] = self.urls.get()
         self.dict["whitespace"] = self.whitespace.get()
         self.dict["diacritics"] = self.diacritics.get()
+
+    def get_all(self):
         return self.dict
 
     def clear_all(self):
@@ -284,6 +288,7 @@ class Word:
         self.urls.set(0)
         self.whitespace.set(0)
         self.diacritics.set(0)
+        self.dict = {}
 
     def set_all(self):
         self.punctuation.set(1)
@@ -330,6 +335,11 @@ class Clean:
         self.word.clear_all()
         self.emoji.clear_all()
 
+    def save(self):
+        self.trans.save()
+        self.word.save()
+        self.emoji.save()
+
     def set_all(self):
         self.trans.set_all()
         self.word.set_all()
@@ -346,7 +356,7 @@ class Clean:
         self.trans.main()
 
         self.save_download = Button(
-            self.fram, text=" Save Download".center(25), font=self.font_butt, bg="red", width=18)
+            self.fram, text=" Save Download".center(25), command = self.save, font=self.font_butt, bg="red", width=18)
         self.save_download.grid(row=1, column=1, padx=5,
                                 pady=5, ipadx=6, ipady=5)
         self.save_download = Button(self.fram, text=" Execute For File Exist".center(25),
