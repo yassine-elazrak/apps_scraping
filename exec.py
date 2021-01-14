@@ -13,11 +13,13 @@ import shutil
 import pandas as pd
 import csv
 from tkinter import ttk
+import  sys
 
 
 class Run:
     def __init__(self, apps, parent, list_file=[]):
         self.parent = parent
+        self.root = apps
         self.objs = {}
         self.threads = []
         self.index = 0
@@ -41,6 +43,7 @@ class Run:
     def set_objs(self, objs):
         self.objs = objs
         print("set_objs", self.objs)
+   
 
     def test(self):
         self.index += 1
@@ -114,15 +117,19 @@ class Exec:
         self.twint = Config_twint(keys=keys , since=since , \
             until=until, outfile=outfile)
         self.twint.run()
+        
 
     def join_files(self):
         list_df = []
-        for name_file in self.list_file:
-            df = pd.read_csv(name_file)
-            list_df.append(df)
+        try:
+            for name_file in self.list_file:
+                df = pd.read_csv(name_file)
+                list_df.append(df)
 
-        df_all = pd.concat(list_df)
-        pd.csv_to(self.name_file)
+            df_all = pd.concat(list_df)
+            pd.csv_to(self.name_file)
+        except :
+            print("error in pandas join file]n]n]nn\n\n\n\n\n")
 
     def update_time(self):
         self.list_time.append(self.since)
@@ -145,9 +152,13 @@ class Exec:
             ##########
         print("\n\n\n\n\n   finish thread    \n\n\n\n")
         File(self.list_file, self.name_file, self.custom).sum_file()
+        self.download.ft_push(self.name_file , 0)
         self.clear_all()
-        # self.bar.stop()
 
+        # self.bar.stop()
+    # def ft_exit(self):
+    #     print("\n\n\n\n\n hello world yassine")
+    #     exit()
     def task_thread(self):
         
         self.get_all()
@@ -157,6 +168,7 @@ class Exec:
                   "replies_count", "retweets_count", "likes_count", "hashtags",
                   "cashtags", "link", "retweet", "quote_url", "video", "thumbnail", "near", "geo", "source",
                   "user_rt_id", "user_rt", "retweet_id", "reply_to", "retweet_date", "translate", "trans_src", "trans_dest"]
+        
         with DIR(self.index) as temp_dir:
             print("\n\n\n\n id=>", self.index)
             for i in range(0, len(self.list_time) - 1):

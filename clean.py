@@ -8,8 +8,9 @@ from tkinter import *
 import tkinter.font as TkFont
 from tkinter import filedialog
 import os
+from  threading import Timer, Thread
 
-# class Clean:
+# class Preprocessing:
 #     def __init__(self, name_file=None):
 #         self.df = pd.DataFrame([])
 #         try:
@@ -98,6 +99,9 @@ class Trans:
         self.fr = IntVar()
         self.ar = IntVar()
         self.parent =parent
+        self.dict = {}
+        for name in ["en" , "fr" , "ar"]:
+            self.dict[name] = 0
 
     def main(self):
         self.fram = LabelFrame(
@@ -113,22 +117,38 @@ class Trans:
             "Courier", 14, "italic")).grid(row=1, column=4, padx=8, pady=6, ipadx=5, ipady=5)
         Checkbutton(self.fram, text=str("  Arabic    "), variable=self.ar, command=self.ft_remove, bg="bisque", font=(
             "Courier", 14, "italic")).grid(row=1, column=6, padx=8, pady=6, ipadx=5, ipady=5)
-        self.en.set(1)
+        # self.en.set(1)
 
     def ft_replace(self):
-        pass
+        self.fr.set(0)
+        self.ar.set(0)
+
+        
+        
 
     def ft_stay(self):
-        pass
+        self.en.set(0)
+        self.ar.set(0)
 
     def ft_remove(self):
-        pass
+        self.fr.set(0)
+        self.en.set(0)
 
     def get_all(self):
-        pass
+        self.dict["en"] = self.en.get()
+        self.dict["fr"] = self.fr.get()
+        self.dict["ar"] = self.ar.get()
+        return self.dict
+
 
     def clear_all(self):
-        pass
+        self.en.set(0)
+        self.ar.set(0)
+        self.fr.set(0)
+
+    def set_all(self):
+        self.en.set(1)
+        
 
 
 class Emoji:
@@ -137,7 +157,9 @@ class Emoji:
         self.replace = IntVar()
         self.remove = IntVar()
         self.stay = IntVar()
-
+        self.dict = {}
+        for name in ["remove" , "stay" , "replace"]:
+            self.dict[name] = 0
 
     def main(self):
         self.fram = LabelFrame(
@@ -156,19 +178,31 @@ class Emoji:
         self.replace.set(1)
 
     def ft_replace(self):
-        pass
+        self.stay.set(0)
+        self.remove.set(0)
 
     def ft_stay(self):
-        pass
+        self.replace.set(0)
+        self.remove.set(0)
 
     def ft_remove(self):
-        pass
+        self.replace.set(0)
+        self.stay.set(0)
 
     def get_all(self):
-        pass
+        self.dict["remove"] = self.remove.get()
+        self.dict["stay"] = self.stay.get()
+        self.dict["replace"] = self.replace.get()
+        return self.dict
 
     def clear_all(self):
-        pass
+        self.replace.set(0)
+        self.remove.set(0)
+        self.stay.set(0)
+    
+    def set_all(self):
+        self.replace.set(1)
+
 
 
 class Word:
@@ -183,6 +217,11 @@ class Word:
         self.lowercase = IntVar()
         self.fillna = IntVar()
         self.name = IntVar()
+        self.dict = {}
+        for name in ["name" , "lowercase"  , "diacritics" , "fillna" , "stem" , "digit" , "punctuation" , "urls" , "whitespace"]:
+            self.dict[name] = 0
+        
+
 
 
 
@@ -213,50 +252,50 @@ class Word:
         Checkbutton(self.fram, text=str("remove screen name"), variable=self.name, bg="bisque", font=(
             "Courier", 14, "italic")).grid(row=2, column=6, padx=14, pady=6)
 
-    def ft_replace(self):
-        pass
+    # def ft_replace(self):
+    #     pass
 
-    def ft_stay(self):
-        pass
+    # def ft_stay(self):
+    #     pass
 
-    def ft_remove(self):
-        pass
+    # def ft_remove(self):
+    #     pass
+# ["name" , "lowercase"  , "diacritics" , "fillna" , "stem" , "digit" , "punctuation" , "urls" , "whitespace"]:
 
     def get_all(self):
-        pass
+        self.dict["punctuation"] = self.punctuation.get()
+        self.dict["name"] = self.name.get()
+        self.dict["stem"] = self.stem.get()
+        self.dict["lowercase"] = self.lowercase.get()
+        self.dict["digit"] = self.digit.get()
+        self.dict["fillna"] = self.fillna.get()
+        self.dict["urls"] = self.urls.get()
+        self.dict["whitespace"] = self.whitespace.get()
+        self.dict["diacritics"] = self.diacritics.get()
+        return self.dict
 
     def clear_all(self):
-        pass
+        self.punctuation.set(0)
+        self.name.set(0)
+        self.stem.set(0)
+        self.lowercase.set(0)
+        self.digit.set(0)
+        self.fillna.set(0)
+        self.urls.set(0)
+        self.whitespace.set(0)
+        self.diacritics.set(0)
 
+    def set_all(self):
+        self.punctuation.set(1)
+        self.name.set(1)
+        self.stem.set(1)
+        self.lowercase.set(1)
+        self.digit.set(1)
+        self.fillna.set(1)
+        self.urls.set(1)
+        self.whitespace.set(1)
+        self.diacritics.set(1)
 
-# class G_Clean:
-#     def __init__(self, parent):
-#         self.master = parent
-
-#     def s_emoji(self):
-#         self.s_emoj
-
-
-# class Application(tk.Frame):
-#     def __init__(self, master=None):
-#         super().__init__(master)
-#         self.master = master
-#         self.pack()
-#         self.pickedfiletypes = (('png files', '*.png'), ('jpeg files', '*.jpeg'))
-#         self.create_widgets()
-
-#     def create_widgets(self):
-#         ...
-
-#         self.fileselect = tk.filedialog.askopenfilename(self,
-#                                     initialdir= os.getcwd(),
-#                                     title= "Please select a file:",
-#                                     filetypes= self.pickedfiletypes)
-#         ...
-
-# root = tk.Tk()
-# app = Application(master=root)
-# app.mainloop()
 
 class Clean:
     def __init__(self, apps, parent, list_file=[]):
@@ -267,17 +306,35 @@ class Clean:
         self.word = Word(parent)
         self.emoji = Emoji(parent)
         self.trans = Trans(parent)
+        self.dict = {}
 
+    def exec(self):
+            th  = Thread(target=self.run).start()
+    def run(self):
+            dic = self.get_all()
+            print("Running" , dic)
     def path(self):
-        name = filedialog.askopenfilename(
+        self.name_file = filedialog.askopenfilename(
             initialdir=os.getcwd(), title="Please select a file:",)
-        print("namme", name)
+        print("namme", self.name_file)
+        self.exec()
 
     def get_all(self):
-        pass
+        self.dict["trans"] = self.trans.get_all()
+        self.dict["word"] = self.word.get_all()
+        self.dict["emoji"] = self.emoji.get_all()
+        return self.dict
 
     def clear_all(self):
-        pass
+        self.trans.clear_all()
+        self.word.clear_all()
+        self.emoji.clear_all()
+
+    def set_all(self):
+        self.trans.set_all()
+        self.word.set_all()
+        self.emoji.set_all()
+
 
     def show(self):
         self.fram = Frame(
@@ -289,31 +346,19 @@ class Clean:
         self.trans.main()
 
         self.save_download = Button(
-            self.fram, text=" Save Download", font=self.font_butt, bg="red", width=18)
+            self.fram, text=" Save Download".center(25), font=self.font_butt, bg="red", width=18)
         self.save_download.grid(row=1, column=1, padx=5,
-                                pady=5, ipadx=6, ipady=15)
-        self.save_download = Button(self.fram, text=" Execute For File Exist",
+                                pady=5, ipadx=6, ipady=5)
+        self.save_download = Button(self.fram, text=" Execute For File Exist".center(25),
                                     command=self.path, font=self.font_butt, bg="red", width=18)
         self.save_download.grid(row=1, column=2, padx=5,
-                                pady=6, ipadx=6, ipady=15)
+                                pady=6, ipadx=6, ipady=5)
+        self.save_download = Button(self.fram, text="set all".center(25),
+                                    command=self.set_all, font=self.font_butt, bg="red", width=18)
+        self.save_download.grid(row=1, column=3, padx=5,
+                                pady=6, ipadx=6, ipady=5)
+        self.save_download = Button(self.fram, text="clear all".center(25),
+                                    command=self.clear_all, font=self.font_butt, bg="red", width=18)
+        self.save_download.grid(row=1, column=4, padx=5,
+                                pady=6, ipadx=6, ipady=5)
 
-
-# app = Tk()
-
-# def main():
-#     em = Word(app)
-#     em.main()
-#     eme = Emoji(app)
-#     eme.main()
-#     t = Trans(app)
-#     t.main()
-#     Save(app)
-
-
-# if __name__ == '__main__':
-
-#     app.geometry('950x640+0+0')
-#     app.configure(background="#091833")
-#     app.title('hello new word')
-#     main()
-#     app.mainloop()
