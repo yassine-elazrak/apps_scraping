@@ -22,19 +22,19 @@ class Head:
 
     def controller(self):
         self.butt_clear = Button(self.frame, text="    HOME    ", command=lambda: self.obj_main.controller(
-            Home), font=self.font_butt, bg="red", width=13)
+            "Home"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=2, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text=" FIELDNAMES ", command=lambda: self.obj_main.controller(
-            Field), font=self.font_butt, bg="red", width=13)
+            "Field"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=3, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text="  DOWNLOAD  ", command=lambda: self.obj_main.controller(
-            Download), font=self.font_butt, bg="red", width=13)
+            "Download"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=4, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text=" CLEAN DATA ", command=lambda: self.obj_main.controller(
-            Clean), font=self.font_butt, bg="red", width=13)
+            "Clean"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=5, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text="   NB_TWEET  ", command=lambda: self.obj_main.controller(
-            Nb), font=self.font_butt, bg="red", width=13)
+            "Nb"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=6, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text="VISUALIZATION", command=lambda: self.obj_main.controller(
             Field), font=self.font_butt, bg="red", width=13)
@@ -53,11 +53,11 @@ class Main:
         self.frame.grid(row=2, rowspan=20, columnspan=16,
                         sticky='WENS', padx=5, pady=0, ipadx=9, ipady=0)
         self.frame.configure(background="#091833")
-
-        for obj in (Home, Field, Download, Clean, Nb):
-            self.objs[obj] = obj(parent, self.frame, self.name_file)
-        self.objs[Home].set_objs(self.objs)
-        self.objs[Home].show()
+        dict = {"Home":Home, "Field" : Field, "Download" :Download, "Clean": Clean,"NB": Nb}
+        for key , obj in dict.items():
+            self.objs[key] = obj(parent, self.frame, self.name_file)
+        self.objs["Home"].set_objs(self.objs)
+        self.objs["Home"].show()
         # self.button_run = Button(
         #     parent, text=' run ', bg='red', width=13)
         # self.button_run.grid(row=19, column=4, sticky='W')

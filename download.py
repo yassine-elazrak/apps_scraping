@@ -3,9 +3,10 @@ from tkinter import ttk
 from random import randint
 
 class Bar:
-    def __init__(self, apps, name_file, row, list_file, root):
+    def __init__(self, apps, name_file, row, list_file, root, download):
         self.apps = apps
         self.root = root
+        self.download= download
         self.fr = Frame(apps, bg="#091833")
         self.fr.pack(side="top", fill="both", expand=False)
         self.fr.grid_rowconfigure(0, weight=1)
@@ -20,8 +21,8 @@ class Bar:
         self.step = 30
         self.maxbytes = 0
         self.progress.start()
-        self.cancle = Button(self.fr, text="stop ", command=self.stop)
-        self.cancle.grid(row=0, column=6, padx=4, pady=2, ipadx=22, ipady=1)
+        # self.cancle = Button(self.fr, text="stop ", command=self.stop)
+        # self.cancle.grid(row=0, column=6, padx=4, pady=2, ipadx=22, ipady=1)
         self.remove = Button(self.fr, text="cancle", command=self.remove)
         self.remove.grid(row=0, column=7, padx=2, pady=2, ipadx=22, ipady=1)
         # self.start()
@@ -52,6 +53,7 @@ class Bar:
             self.flag = False
 
     def remove(self):
+        self.download.DictFiles[name_file] = -1
         self.stop()
         for widget in self.fr.winfo_children():
             widget.destroy()

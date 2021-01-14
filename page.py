@@ -25,6 +25,7 @@ class Body:
 
 def __init__(self, apps, parent, list_file=[]):
     self.body = Body()
+
     def remove(self):
         pass
 
@@ -36,12 +37,16 @@ class Home:
         self.run = Run(apps, parent , list_file)
 
     def set_objs(self, objs):
-        print("set_objs", objs)
         try:
+            #             self.objs.update(objs)
             for key , value in objs.items():
                 self.objs[key] = value 
+            self.run.set_objs(self.objs)
         except :
             print("error obj")
+        
+        
+        
     def show(self):
         self.body.show()
         self.run.show()
@@ -64,11 +69,17 @@ class Download:
         self.apps = apps
         self.index_row = 0
         self.files = list_file
+        self.DictFiles={}
 
     def show(self):
         # showerror("error", message="erro dowm,md")
-        for file in self.files:
+        for file, value in self.DictFiles.items():
             self.index_row += 1
-            Bar(self.master , str(file), self.index_row , self.files, self.apps)
+            Bar(self.master , str(file), self.index_row , self.files, self.apps, self)
+
+    def ft_push(self, name , status):
+        print("Push==>", name ,"==>", status)
+        self.DictFiles[name] = status
+    
 
        
