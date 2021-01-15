@@ -94,6 +94,7 @@ class Exec:
         self.number_tweet = self.nb.get_all()
         self.dict_clean = self.clean.get_all()
         self.flg_clean = self.arena.valuer_clean
+        print("\n\n\n\n Number", self.number_tweet , "dict_clean" , self.dict_clean , "flg_clean" , self.flg_clean)
     #    self.clear_all()
 
     def clear_all(self):
