@@ -6,6 +6,7 @@ import string
 from tkinter.messagebox import showerror
 # from texthero import stopwords
 # from texthero import preprocessing
+from nltk.stem import PorterStemmer
 from deep_translator import GoogleTranslator
 from tkinter import *
 import tkinter.font as TkFont
@@ -24,6 +25,7 @@ class Preprocessing:
         self.stopwords = self.stopwords.union(set(stop_w))
         print("ddd", self.stopwords)
         # demoji.download_codes()
+        self.porter = PorterStemmer()
         self.df = pd.DataFrame([])
         try:
             self.df = pd.read_csv(name_file)
@@ -66,8 +68,7 @@ class Preprocessing:
             text = re.sub(r'https\S+','',text)
         if not text:
             return ""
-        # text = text.split()
-        # text = ' '.join(text)
+     
         if self.language :
             print("ll", self.language)
             text = self.filter_text(text)
@@ -80,8 +81,8 @@ class Preprocessing:
         if self.dic["word"]["lowercase"] == 1:
             text = map(lambda x : x.lower(), text)
             text = filter(lambda x : not x in self.stopwords , text)
-        # if self.dic["word"]["stem"] == 1:
-        #     pass 
+        if self.dic["word"]["stem"] == 1:
+            text = map(lambda x : self.porter.stem(x) , text)
             
         
         return ' '.join(text)
@@ -105,12 +106,12 @@ class Preprocessing:
     def get_df(self):
         return self.df
 
-def main():
-    dict = {'trans': {'en': 1, 'fr': 0, 'ar': 0},\
-         'word': {'name': 1, 'lowercase': 1,\
-         'diacritics': 1, 'fillna': 1, 'stem': 1, 'digit': 1,\
-         'punctuation': 1, 'urls': 1, 'whitespace': 1}, \
-             'emoji': {'remove': 1, 'stay': 0, 'replace': 0}} 
-    cla = Preprocessing('fb.csv' , dict)
-if __name__=='__main__':
-    main()
+# def main():
+#     dict = {'trans': {'en': 1, 'fr': 0, 'ar': 0},\
+#          'word': {'name': 1, 'lowercase': 1,\
+#          'diacritics': 1, 'fillna': 1, 'stem': 1, 'digit': 1,\
+#          'punctuation': 1, 'urls': 1, 'whitespace': 1}, \
+#              'emoji': {'remove': 1, 'stay': 0, 'replace': 0}} 
+#     cla = Preprocessing('fb.csv' , dict)
+# if __name__=='__main__':
+#     main()

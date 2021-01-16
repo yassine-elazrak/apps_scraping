@@ -1,4 +1,5 @@
 from tkinter.messagebox import showerror
+from tkinter import filedialog
 # import matplotlib.pyplot as plt
 # import sweetviz as sv
 # from tools import Clean
@@ -107,27 +108,136 @@ from tkinter.messagebox import showerror
 # # data.show_word()
 # # data.sentiment()
 # # data.show()
+
+
+
+
+# from tkinter import *
+# from PIL import ImageTk, Image
+# from tkinter import filedialog
+# import os
+
+# root = Tk()
+# root.geometry("850x700+300+150")
+# root.resizable(width=True, height=True)
+
+# def openfn():
+#     filename = filedialog.askopenfilename(title='open')
+#     return filename
+# def open_img():
+#     x = './téléchargement.png'          #openfn()
+#     img = Image.open(x)
+#     img = img.resize((650, 650), Image.ANTIALIAS)
+#     img = ImageTk.PhotoImage(img)
+#     panel = Label(root, image=img)
+#     panel.image = img
+#     panel.pack()
+
+# btn = Button(root, text='open image', command=open_img).pack()
+
+# root.mainloop()
+
+
 from tkinter import *
-from PIL import ImageTk, Image
-from tkinter import filedialog
-import os
+from  tools import Input
+import tkinter.font as TkFont
+from tkinter.messagebox import showerror
+import  os
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from pathlib import Path
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-root = Tk()
-root.geometry("850x700+300+150")
-root.resizable(width=True, height=True)
+class  load_visual:
+    def __init__(self, parent , dirname, flg_clean):
+        self.parent = parent
+        self.dir = dirname
+        self.font_butt = TkFont.Font(
+            family='Helvetica', size=10, weight=TkFont.BOLD)
+        self.flg_clean = flg_clean
+    
+    def show(self):
+        pass
 
-def openfn():
-    filename = filedialog.askopenfilename(title='open')
-    return filename
-def open_img():
-    x = './téléchargement.png'          #openfn()
-    img = Image.open(x)
-    img = img.resize((650, 650), Image.ANTIALIAS)
-    img = ImageTk.PhotoImage(img)
-    panel = Label(root, image=img)
-    panel.image = img
-    panel.pack()
+    def controller(self):
+        self.frame = LabelFrame(
+            self.parent, text=" controller :" ,fg = "red",  bg="#091833",
+		  font =("Courier",11, "italic"))
+        self.frame.grid(row=0, columnspan=9, sticky='W', padx=15, pady=5, ipadx=5, ipady=6)
+        self.root = LabelFrame(
+            self.parent, text=" visualisation :" ,fg = "red", bg="#091833",
+		  font =("Courier",11, "italic"))
+        self.root.grid(row=1, columnspan=12, sticky='W', padx=8, pady=6, ipadx=0, ipady=0)
 
-btn = Button(root, text='open image', command=open_img).pack()
+        self.butt_clear = Button(self.frame, text="Language".center(21),  command=self.language ,
+           font=self.font_butt, bg="red", width=13)
+        self.butt_clear.grid(row=2, column=2, padx=30, pady=0, ipadx=5, ipady=0)
+        self.butt_clear = Button(self.frame, text="Sentiment".center(21),  
+            font=self.font_butt, bg="red", width=13)
+        self.butt_clear.grid(row=2, column=3, padx=30, pady=0, ipadx=5, ipady=0)
+        self.butt_clear = Button(self.frame, text="Cluster".center(21),  
+            font=self.font_butt, bg="red", width=13)
+        self.butt_clear.grid(row=2, column=4, padx=30, pady=0, ipadx=5, ipady=0)
+        self.butt_clear = Button(self.frame, text="Freq words".center(21),  
+            font=self.font_butt, bg="red", width=13)
+        self.butt_clear.grid(row=2, column=5, padx=30, pady=0, ipadx=5, ipady=0)
+        
+    def language(self):
+        data1 = {'Country': ['US','CA','GER','UK','FR'],
+         'GDP_Per_Capita': [45000,42000,52000,49000,47000]
+        }
+        df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
+        figure1 = plt.Figure(figsize=(8,4), dpi=100)
+        ax1 = figure1.add_subplot(111)
+        bar1 = FigureCanvasTkAgg(figure1, self.root)
+        bar1.get_tk_widget().grid(row=0, column=0)
+        df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
+        df1.plot(kind='bar', legend=True, ax=ax1)
+        ax1.set_title('Country Vs. GDP Per Capita')
+    
+    def sentiment(self):
+        pass
+    def words(self):
+        pass
+    def cluster(self):
+        pass
 
-root.mainloop()
+class  Visual:
+    def __init__(self, apps, parent, list_file=[]):
+        print("visual")
+        self.parent = parent
+        self.dir = None
+        self.name_file = StringVar()
+        self.var_clean = IntVar()
+        self.name_file.set("filename :")
+        self.font_butt = TkFont.Font(
+            family='Helvetica', size=10, weight=TkFont.BOLD)
+
+
+    def exec(self):
+        if not self.dir or not os.path.exists(self.dir):
+            return
+        for widget in self.parent.winfo_children():
+            widget.destroy()
+        ################################################################
+        load_visual(self.parent  , self.dir , 1).controller()
+
+    def show(self):
+        Label(self.parent, text="Enter name file :", bg="#f2a343" , font =("Courier", 15, "italic")).grid(row=2, column=0, columnspan=6 ,sticky='w', padx=15, pady=12)
+        self.save_download = Button(self.parent, text="choise file ".center(25), command=self.path,
+                                    font=self.font_butt, bg="red", width=12)
+        self.save_download.grid(row=2, column=1, padx=15, pady=12, ipadx=6, ipady=5)
+        self.save_download = Button(self.parent, text="Run".center(25), command=self.exec,
+                                    font=self.font_butt, bg="red", width=12)
+        self.save_download.grid(row=2, column=2, padx=15, pady=12, ipadx=6, ipady=5)
+        Checkbutton(self.parent, text=str(" file is clean "), variable=self.var_clean, bg="bisque", font=(
+            "Courier", 14, "italic")).grid(row=3, column=0, padx=18, pady=6, ipadx=5, ipady=5)
+        Label(self.parent,  textvariable= self.name_file, bg="#f2a343" , font =("Courier", 15, "italic")).grid(row=5, column=0, columnspan=9 ,sticky='w',padx=15, pady=12)
+
+    def path(self):
+        self.dir = filedialog.askopenfilename(
+            initialdir=os.getcwd(), title="Please select a file:",)
+        print("namme", self.dir)
+        if self.dir and os.path.isfile(self.dir):
+            self.name_file.set("filename : " + Path(self.dir).name)
+

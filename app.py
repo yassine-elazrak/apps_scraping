@@ -3,6 +3,7 @@ import tkinter.font as TkFont
 from page import Home, Field, Download
 from clean import Clean
 from nb_tweet import Nb
+from visual import Visual
 from tkinter.messagebox import showerror
 # from fieldnames import Fieldnames
 #  home   filied   down visu   nbr_tw cleandata
@@ -38,7 +39,7 @@ class Head:
             "Nb"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=6, padx=5, pady=5, ipadx=5, ipady=5)
         self.butt_clear = Button(self.frame, text="VISUALIZATION", command=lambda: self.obj_main.controller(
-          "Nb"), font=self.font_butt, bg="red", width=13)
+          "Visual"), font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=7, padx=5, pady=5, ipadx=5, ipady=5)
 
 
@@ -54,7 +55,7 @@ class Main:
         self.frame.grid(row=2, rowspan=20, columnspan=16,
                         sticky='WENS', padx=5, pady=0, ipadx=9, ipady=0)
         self.frame.configure(background="#091833")
-        dict = {"Home":Home, "Field" : Field, "Download" :Download, "Clean": Clean,"Nb": Nb}
+        dict = {"Home":Home, "Field" : Field, "Download" :Download, "Clean": Clean,"Nb": Nb , "Visual":Visual}
         for key , obj in dict.items():
             self.objs[key] = obj(parent, self.frame, self.name_file)
         self.objs["Home"].set_objs(self.objs)

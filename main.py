@@ -3,7 +3,14 @@ import tkinter as tk
 from tkinter.messagebox import showerror
 from app import App
 from tkinter.messagebox import showerror
+# import urllib2
 
+# def internet_on():
+#     try:
+#         response=urllib2.urlopen('http://74.125.228.100',timeout=20)
+#         return True
+#     except urllib2.URLError as err: pass
+#     return False
 # def report_callback_exception(self, exc, val, tb):
 #         showerror("Error", message=str(val))
 
