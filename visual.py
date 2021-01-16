@@ -244,7 +244,7 @@ class  load_visual:
             return 'negative'
 
     def sentiment(self):
-        self.df['sentiment'] = self.df['clean_tweet'].apply(self.analyse)
+        self.df['sentiment'] = self.df['tweet'].apply(self.analyse)
         dic = Counter(self.df['sentiment'])
         # plt.pie(dic.values(), labels=dic.keys(), autopct='%.1f%%')
         # plt.show()

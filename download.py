@@ -42,7 +42,7 @@ class Bar:
 
 
     def start(self):
-        self.progress["value"] = 0
+        self.progress["value"] = randint(4544, 55545)
         self.maxbytes = 5000001
         self.progress["maximum"] = 5000001
         self.read_bytes()
