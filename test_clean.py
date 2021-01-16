@@ -4,8 +4,6 @@ import demoji
 import emoji
 import string
 from tkinter.messagebox import showerror
-# from texthero import stopwords
-# from texthero import preprocessing
 from nltk.stem import PorterStemmer
 from deep_translator import GoogleTranslator
 from tkinter import *

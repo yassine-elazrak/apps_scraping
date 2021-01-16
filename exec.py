@@ -16,7 +16,7 @@ import pandas as pd
 import csv
 from tkinter import ttk
 import  sys
-
+from  clean import Preprocessing
 
 class Run:
     def __init__(self, apps, parent, list_file=[]):
@@ -119,28 +119,31 @@ class Exec:
         for thread in self.list_thread:
             thread.start()
 
-    def my_job(self, keys, since, until, outfile):
+    def my_job(self, keys, since, until, outfile , number):
         print("my_job keys=>", keys)
         print("my_job since=>", since)
         print("my_job until=>", until)
         print("my_job outfile=>", outfile)
+        print("my_job number=>", number)
 
         self.twint = Config_twint(keys=keys , since=since , \
-            until=until, outfile=outfile)
+            until=until, outfile=outfile , number_tweet=number)
         self.twint.run()
+        if self.flg_clean == 1:
+            Preprocessing(outfile , self.dict_clean)################################
 
 
-    def join_files(self):
-        list_df = []
-        try:
-            for name_file in self.list_file:
-                df = pd.read_csv(name_file)
-                list_df.append(df)
+    # def join_files(self):
+    #     list_df = []
+    #     try:
+    #         for name_file in self.list_file:
+    #             df = pd.read_csv(name_file)
+    #             list_df.append(df)
 
-            df_all = pd.concat(list_df)
-            pd.csv_to(self.name_file)
-        except :
-            print("error in pandas join file]n]n]nn\n\n\n\n\n")
+    #         df_all = pd.concat(list_df)
+    #         pd.csv_to(self.name_file)
+    #     except :
+    #         print("error in pandas join file]n]n]nn\n\n\n\n\n")
 
     def update_time(self):
         self.list_time.append(self.since)
@@ -153,18 +156,21 @@ class Exec:
         print("list_time",  self.list_time)
 
     def wait_thread(self):
-        # try:
-        for thread in self.list_thread:
-            thread.join()
-        self.list_thread.clear()
-        self.start = True
-        # except:
-        #     print("error threading")
+        try:
+            for thread in self.list_thread:
+                thread.join()
+            self.list_thread.clear()
+            self.start = True
+        except:
+            print("error threading")
+
             ##########
-        print("\n\n\n\n\n   finish thread    \n\n\n\n")
-        File(self.list_file, self.name_file, self.custom).sum_file()
+        if self.flg_clean == 1:
+            self.custom.append('clean_tweet')
+        File(self.list_file, self.name_file, self.custom , self.number_tweet).sum_file()
         self.download.ft_push(self.name_file , 0)
-        self.clear_all()
+        # self.clear_all()
+        print("\n\n\n\n\n   finish thread    \n\n\n\n")
 
         # self.bar.stop()
     # def ft_exit(self):
@@ -196,7 +202,7 @@ class Exec:
                     self.list_file.append(name_path)
                     print("threading keys==> ", key)
                     self.list_thread.append(Thread(target=self.my_job, args=[[key] , self.since , \
-                        self.until, name_path ]))
+                        self.until, name_path ,self.number_tweet ]))
             self.list_time.clear()
             self.exec()
             print("\\n\n\n\n\nend --------  threading         ")
@@ -225,19 +231,4 @@ class DIR:
         return self.name
 
     def __exit__(self, exc_type, exc_value, traceback):
-        # os.rmdir(self.name)
         shutil.rmtree(self.name)
-
-    # def creat(self):
-    #     self.buton = Frame(self.master, bg="#091833")
-    #     self.buton.grid(row=8, columnspan=13, rowspan=3, sticky="SE")
-    #     self.buton_clear = Button(
-    #         self.buton, text="clear",font=self.font_butt, command=self.clear_all, bg="red", width=14
-    #     )
-    #     self.buton_clear.grid(row=2, column=12, padx=5,pady=2, ipadx=5, ipady=5)
-    #     self.buton_run = Button(self.buton, text="run",font=self.font_butt,bg="red", command=self.run, width=14)
-    #     self.buton_run.grid(row=2, column=14, padx=5, pady=2, ipadx=5, ipady=5)
-
-    # def main(self):
-    #     # Error("hello error test")
-    #     self.creat()

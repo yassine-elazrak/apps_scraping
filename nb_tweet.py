@@ -21,7 +21,7 @@ class Nb:
 
         Checkbutton(self.parent, text=str(" all tweet "), variable=self.nb, bg="bisque", font=(
             "Courier", 14, "italic")).grid(row=2, column=12, padx=18, pady=6, ipadx=5, ipady=5)
-        self.nb.set(1)
+        self.nb.set(0)
 
         self.save_download = Button(
             self.parent, text=" Save Change",command = self.save , font=self.font_butt, bg="red", width=13)
@@ -30,12 +30,17 @@ class Nb:
     def get_all(self):
         return self.data
     def save(self):
-        data = self.name_file.get()
-        # if data.isnumeric() : error
-        print("data=<",data , "nb", self.nb.get())
+        self.data = "100"
+        if self.name_file.get():
+            self.data = str(self.name_file.get())
+            if not self.data.isnumeric()  or int(self.name_file.get()) < 0:
+               showerror(title="Error number_tweet", message="not  a valid number")
+               return
         if self.nb.get() == 1:
-            self.data =  -1
-        self.data =  int(data)
+            self.data =  "-1"
+        self.data = str(self.data)
+        self.data =  int(self.data)
+        # print("data==",self.data , "nb", self.nb.get())
 
     def clear_all(self):
         self.nb.set(0)

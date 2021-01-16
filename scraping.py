@@ -7,73 +7,58 @@ import pandas as pd
 from tkinter.messagebox import showerror
 
 class File:
-    def __init__(self, list_file=[],name_file="", custom = []):
+    def __init__(self, list_file=[],name_file="", custom = [] , nb=100):
         self.list_file = list_file
         self.name_file = name_file
         self.custom = custom
+        self.nb = nb
 
     def sum_file(self):
-        # with open(self.name_file, 'a') as out:
-        #     for name in self.list_file:
-        #         with open(name, 'r+') as data:
-        #             data.__next__()
-        #             for line in data:
-        #                 out.write(line)
-        # def slice_file(self):
-    #     df = pd.read_csv(".tweets.csv")
-    #     new_f = df[self.keys]
-    #     new_f.to_csv(self.name_file , index=False)
+        try:
+            data_csv = pd.concat( [ pd.read_csv(f) for f in self.list_file] )
+            if len(self.custom) != 22:
+                data_csv = data_csv[self.custom]
+            if self.nb >= 0:
+                data_csv.head(self.nb).to_csv(self.name_file , index=False )
+            else:
+                data_csv.to_csv(self.name_file , index=False )
 
-        # data_files = []
-        # for name in self.list_file:
-        #     df = pd.read_csv(name)
-        #     data_files.append(df)
-        # df_all = pd.concat(data_files)
-        # df_all.to_csv(self.name_file, index=False)
-       data_csv = pd.concat( [ pd.read_csv(f) for f in self.list_file] )
-    #    print("\n \n custom", self.custom, len(self.custom))
-       if len(self.custom) != 22:
-           data_csv = data_csv[self.custom]
-    #    print("hehe\h]h]h]]n]\n\n\n\n\n\n\n\n\n\n",data_csv["language"].head())
-       data_csv.to_csv(self.name_file , index=False )
-
+        except Exception as e:
+            print("\n\n\nError pandass yassine ", e)
 
 
 class Config_twint:
-    def __init__(self, keys=[], since="2018-12-29",until="2019-01-01", outfile="tweets33"):
+    def __init__(self, keys=[], since="2018-12-29",until="2019-01-01", outfile="tweets33", number_tweet=100):
         print("\n\n\n\n\\nyassine  ttkeys ", keys)
         print("ttsince ", since)
         print("ttuntil ", until)
         print("ttoutfile", outfile)
+        print("number_tweet", number_tweet)
         print("\n\n\n\n\n\n\n")
   
-        # self.name_file = outfile
-        # self.keys = custom
-        self.c = twint.Config()
-        self.c.Search = keys
-        self.c.Since = since
-        self.c.Until = until
+        try:
+            self.c = twint.Config()
+            self.c.Search = keys
+            self.c.Since = since
+            self.c.Until = until
 
-        # self.c.Search = ["RAM_Maroc"]#keys
-        # self.c.Since = "2019-11-01" ##since
-        # self.c.Until = "2019-11-09" #until
-        # self.c.Lang = "en"
-        self.c.Limit = 100
-        self.c.Store_csv = True
-        self.c.Output = outfile
-        # "tweets.csv" 
-        self.c.Hide_output = True
-        
-    # def slice_file(self):
-    #     df = pd.read_csv(".tweets.csv")
-    #     new_f = df[self.keys]
-    #     new_f.to_csv(self.name_file , index=False)
+            # self.c.Search = ["RAM_Maroc"]#keys
+            # self.c.Since = "2019-11-01" ##since
+            # self.c.Until = "2019-11-09" #until
+
+            if number_tweet >= 0:
+                self.c.Limit = number_tweet
+            self.c.Store_csv = True
+            self.c.Output = outfile
+            self.c.Hide_output = True
+        except :
+            showerror("error config twint", message=" parameter not valid")
+            return
 
 
     def run(self):
-        # pass
         twint.run.Search(self.c)
-#         # self.slice_file()
+
 
 
 
