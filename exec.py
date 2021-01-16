@@ -169,7 +169,7 @@ class Exec:
             self.custom.append('clean_tweet')
         File(self.list_file, self.name_file, self.custom , self.number_tweet).sum_file()
         self.download.ft_push(self.name_file , 0)
-        # self.clear_all()
+        self.clear_all()
         print("\n\n\n\n\n   finish thread    \n\n\n\n")
 
         # self.bar.stop()

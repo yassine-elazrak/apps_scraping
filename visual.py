@@ -1,3 +1,4 @@
+from collections import Counter
 from tkinter.messagebox import showerror
 from tkinter import filedialog
 # import matplotlib.pyplot as plt
@@ -144,8 +145,11 @@ import tkinter.font as TkFont
 from tkinter.messagebox import showerror
 import  os
 from pandas import DataFrame
+import pandas as pd
 import matplotlib.pyplot as plt
 from pathlib import Path
+from wordcloud import WordCloud
+from  textblob import TextBlob
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class  load_visual:
@@ -155,7 +159,8 @@ class  load_visual:
         self.font_butt = TkFont.Font(
             family='Helvetica', size=10, weight=TkFont.BOLD)
         self.flg_clean = flg_clean
-    
+        self.df = pd.read_csv(dirname)    
+
     def show(self):
         pass
 
@@ -172,35 +177,113 @@ class  load_visual:
         self.butt_clear = Button(self.frame, text="Language".center(21),  command=self.language ,
            font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=2, padx=30, pady=0, ipadx=5, ipady=0)
-        self.butt_clear = Button(self.frame, text="Sentiment".center(21),  
+        self.butt_clear = Button(self.frame, text="Sentiment".center(21),  command=self.sentiment,
             font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=3, padx=30, pady=0, ipadx=5, ipady=0)
         self.butt_clear = Button(self.frame, text="Cluster".center(21),  
             font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=4, padx=30, pady=0, ipadx=5, ipady=0)
-        self.butt_clear = Button(self.frame, text="Freq words".center(21),  
+        self.butt_clear = Button(self.frame, text="Freq words".center(21),  command= self.show_word,
             font=self.font_butt, bg="red", width=13)
         self.butt_clear.grid(row=2, column=5, padx=30, pady=0, ipadx=5, ipady=0)
-        
-    def language(self):
-        data1 = {'Country': ['US','CA','GER','UK','FR'],
-         'GDP_Per_Capita': [45000,42000,52000,49000,47000]
-        }
-        df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
-        figure1 = plt.Figure(figsize=(8,4), dpi=100)
+
+    
+#     def show_word(self):
+#         wordcloud = WordCloud(width=900, height=500, max_words=1628).generate(
+#             ''.join(self.df['clean_tweet']))
+#         plt.figure()
+#         plt.imshow(wordcloud, interpolation="bilinear")
+#         plt.axis("off")
+#         plt.show()
+#         # plt.savefig('books_read.png')
+# f = plt.Figure(figsize=(4,4))
+#         #a = f.add_subplot(111)
+#         pie = plt.pie(values, labels=header, colors=colors, startangle=90, 
+#                       autopct='%.1f%%')
+#         self.canvas = FigureCanvasTkAgg(f, top_frame)
+    def language(self):###https://datatofish.com/matplotlib-charts-tkinter-gui/
+        dic = Counter(self.df['language'])
+        figure1 = plt.Figure(figsize=(8,4))
         ax1 = figure1.add_subplot(111)
+        ax1.pie(dic.values(), labels=dic.keys(), autopct='%.1f%%')
         bar1 = FigureCanvasTkAgg(figure1, self.root)
         bar1.get_tk_widget().grid(row=0, column=0)
-        df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
-        df1.plot(kind='bar', legend=True, ax=ax1)
-        ax1.set_title('Country Vs. GDP Per Capita')
-    
+        ax1.legend(dic.keys()) 
+        ax1.set_xlabel('languages')
+        ax1.set_title('Static languages')
+
+    def show_word(self):
+        wordcloud = WordCloud(width=1100, height=600, max_words=2222).generate(
+            ''.join(self.df['clean_tweet']))
+        figure1 = plt.Figure(figsize=(8,4))
+        ax1 = figure1.add_subplot(111)
+        ax1.imshow(wordcloud, interpolation="bilinear")
+        plt.axis("off")
+        bar1 = FigureCanvasTkAgg(figure1, self.root)
+        bar1.get_tk_widget().grid(row=0, column=0)
+        # ax1.legend(dic.keys()) 
+        # ax1.set_xlabel('languages')
+        # ax1.set_title('Static languages')
+        # plt.savefig('books_read.png')
+
+
+#         # plt.savefig('books_read.png')
+#         # negative vs. positive neutral
+
+    def analyse(self, text):
+        try:
+            analys = TextBlob(text)
+        except:
+            print('error textblob')
+
+        if analys.polarity > 0.0:
+            return 'positive'
+        elif analys.polarity == 0.0:
+            return 'neutral'
+        else:
+            return 'negative'
+
     def sentiment(self):
-        pass
-    def words(self):
-        pass
-    def cluster(self):
-        pass
+        self.df['sentiment'] = self.df['clean_tweet'].apply(self.analyse)
+        dic = Counter(self.df['sentiment'])
+        # plt.pie(dic.values(), labels=dic.keys(), autopct='%.1f%%')
+        # plt.show()
+        figure1 = plt.Figure(figsize=(8,4))
+        ax1 = figure1.add_subplot(111)
+        ax1.pie(dic.values(), labels=dic.keys(), autopct='%.1f%%')
+        bar1 = FigureCanvasTkAgg(figure1, self.root)
+        bar1.get_tk_widget().grid(row=0, column=0)
+        ax1.legend(dic.keys()) 
+        ax1.set_xlabel('languages')
+        ax1.set_title('Static languages')
+
+       
+
+    # def analyse(self, text):
+    #     try:
+    #         analys = TextBlob(text)
+    #     except:
+    #         print('error textblob')
+        
+    # def language(self):
+    #     data1 = {'Country': ['US','CA','GER','UK','FR'],
+    #      'GDP_Per_Capita': [45000,42000,52000,49000,47000]
+    #     }
+    #     df1 = DataFrame(data1,columns=['Country','GDP_Per_Capita'])
+    #     figure1 = plt.Figure(figsize=(8,4), dpi=100)
+    #     ax1 = figure1.add_subplot(111)
+    #     bar1 = FigureCanvasTkAgg(figure1, self.root)
+    #     bar1.get_tk_widget().grid(row=0, column=0)
+    #     df1 = df1[['Country','GDP_Per_Capita']].groupby('Country').sum()
+    #     df1.plot(kind='bar', legend=True, ax=ax1)
+    #     ax1.set_title('Country Vs. GDP Per Capita')
+    
+    # def sentiment(self):
+    #     pass
+    # def words(self):
+    #     pass
+    # def cluster(self):
+    #     pass
 
 class  Visual:
     def __init__(self, apps, parent, list_file=[]):
