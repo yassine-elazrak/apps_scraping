@@ -75,6 +75,8 @@ class Main:
         self.last_obj = obj
         self.remove()
         frame = self.objs[obj]
+        if obj == "Visual":
+            frame.set_dict(self.objs["Clean"].get_all())
         frame.show()
 
     def add(self):
