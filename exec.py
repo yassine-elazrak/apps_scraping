@@ -15,9 +15,10 @@ import shutil
 import pandas as pd
 import csv
 from tkinter import ttk
-import  sys
+import sys
 import requests
-from  clean import Preprocessing
+from clean import Preprocessing
+
 
 class Run:
     def __init__(self, apps, parent, list_file=[]):
@@ -46,12 +47,11 @@ class Run:
     def set_objs(self, objs):
         self.objs = objs
         print("set_objs", self.objs)
-   
 
     def test(self):
         self.index += 1
         # self.index_file += 1
-        Exec(self.objs, self.index).run()###.join()
+        Exec(self.objs, self.index).run()  # .join()
         # self.since, self.until =  self.objs["Home"].body.time.get_all()
         # print("date",self.objs["Home"].body.time.get_all())
         # print("file" , self.objs["Home"].body.file.get_all())
@@ -98,8 +98,9 @@ class Exec:
         # self.date.clear_all()
         # self.path.clear_all()
         # self.box.clear_all()
-        # self.arena.clear_all()
-        print("\n\n\n\n Number", self.number_tweet , "dict_clean" , self.dict_clean , "flg_clean" , self.flg_clean)
+        self.arena.init()
+        print("\n\n\n\n Number", self.number_tweet, "dict_clean",
+              self.dict_clean, "flg_clean", self.flg_clean)
     #    self.clear_all()
 
     def clear_all(self):
@@ -120,11 +121,14 @@ class Exec:
         self.list_file = []
         self.list_time = []
         self.start = True
-    def connection(self):
-        try:
-	        request = requests.get('http://74.125.228.100',timeout=20)
-        except (requests.ConnectionError, requests.Timeout) as exception:
-	        showerror("ConnectionError","No internet connection.")
+
+    # def connection(self):
+    #     try:
+	#         request = requests.get('http://74.125.228.100', timeout=20)
+    #         return 1
+    #     except (requests.ConnectionError, requests.Timeout) as exception:
+	#         showerror("ConnectionError","No internet connection.")
+        # return 0
 
     def exec(self):
         for thread in self.list_thread:
@@ -222,10 +226,13 @@ class Exec:
     def run(self):
         # if self.start == True:
         #     self.start = False
-        print("kyes === > "  , self.arena.get_all())
+        # print("kyes === > "  , self.arena.get_all())
+
         if not self.arena.get_all():
             showerror("error running", " not find keys please \ntry again with keys search again")
             return 
+        # if not  self.connection():
+        #     return
         th = Thread(target=self.task_thread).start()
         # th.join()
         print("join")

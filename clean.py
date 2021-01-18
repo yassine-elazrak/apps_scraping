@@ -337,8 +337,8 @@ class Clean:
             th  = Thread(target=self.run).start()
     def run(self):
             dic = self.get_all()
-            # print("Running" , dic)
             Preprocessing(self.name_file , dic)
+            print(" finsh Running" , dic)
 
     def path(self):
         self.name_file = filedialog.askopenfilename(
