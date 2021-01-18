@@ -2,6 +2,8 @@
 import twint
 import datetime
 import pandas as pd
+from tkinter.messagebox import showerror
+import csv
 # except RuntimeError:
 #     import sys; sys.exit() from threading import Timer, Thread
 from tkinter.messagebox import showerror
@@ -14,6 +16,10 @@ class File:
         self.nb = nb
 
     def sum_file(self):
+        header = ["id", "conversation_id", "created_at", "date", "time", "timezone", "user_id", "username", "name", "place", "tweet", "language", "mentions", "urls", "photos",
+                  "replies_count", "retweets_count", "likes_count", "hashtags",
+                  "cashtags", "link", "retweet", "quote_url", "video", "thumbnail", "near", "geo", "source",
+                  "user_rt_id", "user_rt", "retweet_id", "reply_to", "retweet_date", "translate", "trans_src", "trans_dest"]
         try:
             data_csv = pd.concat( [ pd.read_csv(f) for f in self.list_file] )
             if len(self.custom) != 22:
@@ -24,7 +30,11 @@ class File:
                 data_csv.to_csv(self.name_file , index=False )
 
         except Exception as e:
-            print("\n\n\nError pandass yassine ", e)
+            with open(self.name_file, 'w') as file_csv:
+                        head = csv.DictWriter(file_csv, fieldnames=header)
+                        head.writeheader()
+                        showerror("Error file %s" % self.name_file , " not data found ")
+            # print("\n\n\nError pandass yassine ", e)
 
 
 class Config_twint:

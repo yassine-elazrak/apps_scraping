@@ -36,7 +36,7 @@ class Preprocessing:
                   "royalairmaroc", "الخطوط المغربيه", "#الخطوط_الملكية_المغربية ", "الخطوط الملكية المغربية", "Royal Air Maroc", "لارام",  " لارام", "الخطوط_الملكية_المغربية", "RAM"]
         self.stopwords = self.stopwords.union(set(stop_w))
         # print("ddd", self.stopwords)
-        demoji.download_codes()
+        # demoji.download_codes()
         self.porter = PorterStemmer()
         self.df = pd.DataFrame([])
         self.name_file = name_file
@@ -46,16 +46,16 @@ class Preprocessing:
             raise Exception("erro file %s" % (name_file))
         self.language = None
         self.trans()
-        print( self.dic)
-        for s in self.df['tweet']:
-            print(s)
-        print("---------")
+        # print( self.dic)
+        # for s in self.df['tweet']:
+        #     print(s)
+        # print("---------")
         self.df['clean_tweet'] = self.df['tweet'].apply(self.test)
-        for s in self.df['clean_tweet']:
-            print(s)
-        print("---------")
+        # for s in self.df['clean_tweet']:
+        #     print(s)
+        # print("---------")
         self.df.to_csv(self.name_file , index=False )
-        print("--------- finn \n\n\n\n\n")
+        # print("--------- finn \n\n\n\n\n")
 
     def trans(self):
         for key, value in self.dic['trans'].items():
@@ -283,16 +283,6 @@ class Word:
         Checkbutton(self.fram, text=str("remove screen name"), variable=self.name, bg="bisque", font=(
             "Courier", 14, "italic")).grid(row=2, column=6, padx=14, pady=6)
 
-    # def ft_replace(self):
-    #     pass
-
-    # def ft_stay(self):
-    #     pass
-
-    # def ft_remove(self):
-    #     pass
-# ["name" , "lowercase"  , "diacritics" , "fillna" , "stem" , "digit" , "punctuation" , "urls" , "whitespace"]:
-
     def save(self):
         self.dict["punctuation"] = self.punctuation.get()
         self.dict["name"] = self.name.get()
@@ -347,13 +337,13 @@ class Clean:
             th  = Thread(target=self.run).start()
     def run(self):
             dic = self.get_all()
-            print("Running" , dic)
+            # print("Running" , dic)
             Preprocessing(self.name_file , dic)
 
     def path(self):
         self.name_file = filedialog.askopenfilename(
             initialdir=os.getcwd(), title="Please select a file:",)
-        print("namme", self.name_file)
+        # print("namme", self.name_file)
         if os.path.isfile(self.name_file):
             self.exec()
 
@@ -367,6 +357,7 @@ class Clean:
         self.trans.clear_all()
         self.word.clear_all()
         self.emoji.clear_all()
+        self.save()
 
     def save(self):
         self.trans.save()
@@ -377,6 +368,7 @@ class Clean:
         self.trans.set_all()
         self.word.set_all()
         self.emoji.set_all()
+        self.save()
 
 
     def show(self):

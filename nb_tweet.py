@@ -34,8 +34,9 @@ class Nb:
         if self.name_file.get():
             self.data = str(self.name_file.get())
             if not self.data.isnumeric()  or int(self.name_file.get()) < 0:
-               showerror(title="Error number_tweet", message="not  a valid number")
-               return
+                if self.nb.get() == 0:
+                    showerror(title="Error number_tweet", message="not  a valid number")
+                    return
         if self.nb.get() == 1:
             self.data =  "-1"
         self.data = str(self.data)

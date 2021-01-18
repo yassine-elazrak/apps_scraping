@@ -16,9 +16,10 @@ class Box:
 
 
     def add(self):
-        if self.data.get() and not "      enter key search" in self.data.get():
-            self.Words.append(self.data.get())
-            self.list_box.insert(0, self.data.get())
+        word = str(self.data.get()).strip()
+        if   word and not "      enter key search" in   word:
+            self.Words.append(str(self.data.get()).strip())
+            self.list_box.insert(0,   word)
             self.data.ft_delete(0, END)
 
     def remove(self):
@@ -27,7 +28,7 @@ class Box:
             self.Words.pop()
 
     def get_all(self):
-        print("keys=>>", self.Words)
+        # print("keys=>>", self.Words)
         self.valuer_clean = self.var_clean.get()
         return self.Words
         

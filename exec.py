@@ -16,6 +16,7 @@ import pandas as pd
 import csv
 from tkinter import ttk
 import  sys
+import requests
 from  clean import Preprocessing
 
 class Run:
@@ -94,14 +95,19 @@ class Exec:
         self.number_tweet = self.nb.get_all()
         self.dict_clean = self.clean.get_all()
         self.flg_clean = self.arena.valuer_clean
+        # self.date.clear_all()
+        # self.path.clear_all()
+        # self.box.clear_all()
+        # self.arena.clear_all()
         print("\n\n\n\n Number", self.number_tweet , "dict_clean" , self.dict_clean , "flg_clean" , self.flg_clean)
     #    self.clear_all()
 
     def clear_all(self):
-        self.date.clear_all()
-        self.path.clear_all()
-        self.box.clear_all()
-        self.arena.clear_all()
+        # self.date.clear_all()
+        # self.path.clear_all()
+        # self.box.clear_all()
+        # self.arena.clear_all()
+
         # self.list_time.clear()
         # self.list_file.clear()
         # self.
@@ -114,6 +120,11 @@ class Exec:
         self.list_file = []
         self.list_time = []
         self.start = True
+    def connection(self):
+        try:
+	        request = requests.get('http://74.125.228.100',timeout=20)
+        except (requests.ConnectionError, requests.Timeout) as exception:
+	        showerror("ConnectionError","No internet connection.")
 
     def exec(self):
         for thread in self.list_thread:
@@ -155,7 +166,7 @@ class Exec:
         self.list_time.append(self.until)
         print("list_time",  self.list_time)
 
-    def wait_thread(self):
+    def wait_thread(self, list_file):
         try:
             for thread in self.list_thread:
                 thread.join()
@@ -167,7 +178,7 @@ class Exec:
             ##########
         if self.flg_clean == 1:
             self.custom.append('clean_tweet')
-        File(self.list_file, self.name_file, self.custom , self.number_tweet).sum_file()
+        File(list_file, self.name_file, self.custom , self.number_tweet).sum_file()
         self.download.ft_push(self.name_file , 0)
         self.clear_all()
         print("\n\n\n\n\n   finish thread    \n\n\n\n")
@@ -177,7 +188,7 @@ class Exec:
     #     print("\n\n\n\n\n hello world yassine")
     #     exit()
     def task_thread(self):
-        
+        list_file = []
         self.get_all()
         self.download.ft_push(self.name_file , 1)
         self.update_time()
@@ -196,21 +207,25 @@ class Exec:
                     name_path = os.path.join(temp_dir, name_file)
                     name_path = name_path.replace(" ", "_").replace(":", "_")
                     touch(name_path)
-                    with open(name_path, 'a+') as file_csv:
+                    with open(name_path, 'w') as file_csv:
                         head = csv.DictWriter(file_csv, fieldnames=header)
                         head.writeheader()
-                    self.list_file.append(name_path)
+                        list_file.append(name_path)
                     print("threading keys==> ", key)
                     self.list_thread.append(Thread(target=self.my_job, args=[[key] , self.since , \
                         self.until, name_path ,self.number_tweet ]))
             self.list_time.clear()
             self.exec()
             print("\\n\n\n\n\nend --------  threading         ")
-            self.wait_thread()
+            self.wait_thread(list_file)
 
     def run(self):
         # if self.start == True:
         #     self.start = False
+        print("kyes === > "  , self.arena.get_all())
+        if not self.arena.get_all():
+            showerror("error running", " not find keys please \ntry again with keys search again")
+            return 
         th = Thread(target=self.task_thread).start()
         # th.join()
         print("join")

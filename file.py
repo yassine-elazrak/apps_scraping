@@ -65,11 +65,11 @@ class DIR:
         name_file = "tweets_twitter"
         path_file = self.dir.get()
         if  self.name_file.get() and  not "name file" in self.name_file.get() :
-            name_file = self.name_file.get()
-        if self.var_json.get() == 1:
-            path_file = path_file + "/" + name_file + ".json"
-        else:
-            path_file = path_file + "/" + name_file + ".csv"
+            name_file = str(self.name_file.get()).strip()
+        # if self.var_json.get() == 1:
+        #     path_file = path_file + "/" + name_file + ".json"
+        # else:
+        path_file = path_file + "/" + name_file + ".csv"
         return path_file
         
     def main(self):
