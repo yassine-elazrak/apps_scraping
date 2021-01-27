@@ -7,7 +7,7 @@ from threading import Timer, Thread
 from tkinter.messagebox import *
 import os
 from tkinter.messagebox import showerror
-
+from time import sleep
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from touch import touch
@@ -133,6 +133,7 @@ class Exec:
     def exec(self):
         for thread in self.list_thread:
             thread.start()
+            print("Executing command\n\n\n")
 
     def my_job(self, keys, since, until, outfile , number):
         print("my_job keys=>", keys)

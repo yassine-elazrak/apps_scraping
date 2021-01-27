@@ -129,15 +129,13 @@ class load_visual:
             showerror("Error Visual cluster :",
                       "not find column clean_tweet, please clean file ")
             return
+        self.df['tfidf'] = self.df['clean_tweet'].pipe(hero.tfidf)
         self.df['pca'] = (
-            self.df['clean_tweet']
-            .pipe(hero.tfidf, max_features=30000)
-            .pipe(hero.pca)
+            self.df['tfidf'].pipe(hero.pca)
         )
         self.df['kmeans'] = (
-            self.df['tweet']
-            .pipe(hero.tfidf, max_features=30000)
-            .pipe(hero.kmeans, n_clusters=5)
+            self.df['tfidf']
+            .pipe(hero.kmeans, n_clusters=3)
         )
         figure1 = plt.Figure(figsize=(8, 4))
         ax1 = figure1.add_subplot(111)
@@ -149,7 +147,7 @@ class load_visual:
                 x.append(i[0])
                 # print(i[0])
                 y.append(i[1])
-            pprint(x)
+            # pprint(x)
             ax1.scatter(x, y)
 
         bar1 = FigureCanvasTkAgg(figure1, self.root)

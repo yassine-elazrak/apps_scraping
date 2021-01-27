@@ -17,6 +17,26 @@ from tkinter.messagebox import showerror
 # app = Tk()
 # tk.Tk.report_callback_exception = report_callback_exception
     # now method is overridden
+
+
+
+    # fg= "steel blue"  "#f2a343" "bg#d9d9d9" "#c60000"
+# pyinstaller.exe --onefile -w --hiddenimport=babel.numbers
+# pip3 install --user --upgrade git+https://github.com/twintproject/twint.git@origin/master#egg=twint
+# pyinstaller --onefile --windowed --icon assets\zahlen_und_code.icn main.py
+# 
+### pyinstaller --onefile --windowed part_manager.py
+### pyinstaller --onefile --add-binary='/System/Library/Frameworks/Tk.framework/Tk':'tk' --add-binary='/System/Library/Frameworks/Tcl.framework/Tcl':'tcl' part_manager.py
+
+
+####key___["Royal Air Maroc" , "@RAM_Maroc",    "@RAM_Maroc", \
+#   "royalairmaroc", "الخطوط المغربيه" , "#الخطوط_الملكية_المغربية "\
+#  , "الخطوط الملكية المغربية"    , "لارام",  " لارام"\
+# ,"الخطوط_الملكية_المغربية" ]
+# pip3 install https://github.com/pyinstaller/pyinstaller/archive/develop.zip
+
+
+#### https://medium.com/analytics-vidhya/how-to-determine-the-optimal-k-for-k-means-708505d204eb
 app = tk.Tk()
 
 
