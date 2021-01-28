@@ -1,22 +1,32 @@
 from tkinter import filedialog
-import texthero as hero
+# # import texthero as hero
+# # import numpy.random.common
+# # import numpy.random.bounded_integers
+# # import numpy.random.entropy
+
 from tkinter import *
-from tools import Input
+import tkinter as tk
+from pandas import DataFrame
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from collections import Counter###
+import numpy as np###
+from pathlib import Path
+import pandas as pd
 import tkinter.font as TkFont
 from tkinter.messagebox import showerror
 import os
-from collections import Counter
-import numpy as np
-from pandas import DataFrame
-import pandas as pd
-import matplotlib.pyplot as plt
-from pathlib import Path
-from wordcloud import WordCloud
-from textblob import TextBlob
-from pprint import pprint
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from clean import Preprocessing
+from textblob import TextBlob
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
+from pprint import pprint
+from sklearn.decomposition import PCA
 
+# pca = PCA(n_components=2)
+# principalComponents = pca.fit_transform(x)
+# principalDf = pd.DataFrame(data = principalComponents
+#              , columns = ['principal component 1', 'principal component 2'])
 
 class load_visual:
     def __init__(self, parent, dirname, flg_clean , dict_clean):
@@ -84,15 +94,32 @@ class load_visual:
             showerror("Error Visual word",
                       "not find column clean_tweet, please clean file ")
             return
-        wordcloud = WordCloud(width=1100, height=600, max_words=1000).generate(
-            ''.join(self.df['clean_tweet']))
+        # wordcloud = WordCloud(width=1100, height=600, max_words=1000).generate(
+        #     ''.join(self.df['clean_tweet']))
+            # plot.barh(x='words',
+            #           y='count',
+            #           ax=ax,
+            #           color="purple")
+        data = ''.join(self.df['clean_tweet'])
+        dic = dict(Counter(data.split()).most_common(111))
+        pprint(dic)
         figure1 = plt.Figure(figsize=(8, 4))
         ax1 = figure1.add_subplot(111)
-        ax1.imshow(wordcloud, interpolation="bilinear")
-        plt.axis("off")
+        ax1.pie(dic.values(), labels=dic.keys(), autopct='%.1f%%')
         bar1 = FigureCanvasTkAgg(figure1, self.root)
         bar1.get_tk_widget().grid(row=0, column=0)
+        ax1.legend(dic.keys())
+        # ax1.set_xlabel('languages')
+        # ax1.set_title('Static languages')
         ax1.set_title('Frequense WordS')
+        # ax1.imshow(wordcloud, interpolation="bilinear")
+        # plt.axis("off")
+        # plot.barh(x='words',
+        #               y='count',
+        #               ax=ax,
+        #               color="purple")
+        # bar1 = FigureCanvasTkAgg(figure1, self.root)
+        # bar1.get_tk_widget().grid(row=0, column=0)
 
     def analyse(self, text):
         try:
@@ -129,32 +156,39 @@ class load_visual:
             showerror("Error Visual cluster :",
                       "not find column clean_tweet, please clean file ")
             return
-        self.df['tfidf'] = self.df['clean_tweet'].pipe(hero.tfidf)
-        self.df['pca'] = (
-            self.df['tfidf'].pipe(hero.pca)
-        )
-        self.df['kmeans'] = (
-            self.df['tfidf']
-            .pipe(hero.kmeans, n_clusters=3)
-        )
-        figure1 = plt.Figure(figsize=(8, 4))
-        ax1 = figure1.add_subplot(111)
-        for i in range(0, 5):
-            data = self.df[self.df['kmeans'] == i]['pca'].to_numpy()
-            x = []
-            y = []
-            for i in data:
-                x.append(i[0])
-                # print(i[0])
-                y.append(i[1])
-            # pprint(x)
-            ax1.scatter(x, y)
+        vectorizer = TfidfVectorizer(stop_words = 'english')
+        data = vectorizer.fit_transform(self.df['clean_tweet'])
+        pca = PCA(n_components=2)
+        p = pca.fit_transform(data)
+        kmeans = KMeans(n_clusters=3).fit(df)
+        centroids = kmeans.cluster_centers_
 
-        bar1 = FigureCanvasTkAgg(figure1, self.root)
-        bar1.get_tk_widget().grid(row=0, column=0)
-        ax1.legend([1, 2, 3, 4, 5])
-        ax1.set_xlabel('')
-        ax1.set_title('Analyse Category tweets')
+        # self.df['tfidf'] = self.df['clean_tweet'].pipe(hero.tfidf)
+        # self.df['pca'] = (
+        #     self.df['tfidf'].pipe(hero.pca)
+        # )
+        # self.df['kmeans'] = (
+        #     self.df['tfidf']
+        #     .pipe(hero.kmeans, n_clusters=3)
+        # )
+        # figure1 = plt.Figure(figsize=(8, 4))
+        # ax1 = figure1.add_subplot(111)
+        # for i in range(0, 5):
+        #     data = self.df[self.df['kmeans'] == i]['pca'].to_numpy()
+        #     x = []
+        #     y = []
+        #     for i in data:
+        #         x.append(i[0])
+        #         # print(i[0])
+        #         y.append(i[1])
+        #     # pprint(x)
+        #     ax1.scatter(x, y)
+
+        # bar1 = FigureCanvasTkAgg(figure1, self.root)
+        # bar1.get_tk_widget().grid(row=0, column=0)
+        # ax1.legend([1, 2, 3, 4, 5])
+        # ax1.set_xlabel('')
+        # ax1.set_title('Analyse Category tweets')
 
 
 class Visual:
