@@ -1,9 +1,9 @@
 from tkinter import filedialog
-# # import texthero as hero
+# import texthero as hero
 # # import numpy.random.common
 # # import numpy.random.bounded_integers
 # # import numpy.random.entropy
-
+# from kneed import KneeLocator
 from tkinter import *
 import tkinter as tk
 from pandas import DataFrame
@@ -22,6 +22,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 from pprint import pprint
 from sklearn.decomposition import PCA
+from math import sqrt 
 
 # pca = PCA(n_components=2)
 # principalComponents = pca.fit_transform(x)
@@ -156,39 +157,59 @@ class load_visual:
             showerror("Error Visual cluster :",
                       "not find column clean_tweet, please clean file ")
             return
-        vectorizer = TfidfVectorizer(stop_words = 'english')
-        data = vectorizer.fit_transform(self.df['clean_tweet'])
+        vectorizer = TfidfVectorizer(analyzer='word', 
+                              token_pattern=r'\b[a-zA-Z]{3,}\b',
+                              ngram_range=(1, 1) 
+                              )  
+        data = vectorizer.fit_transform(self.df['clean_tweet']).toarray()
         pca = PCA(n_components=2)
         p = pca.fit_transform(data)
-        kmeans = KMeans(n_clusters=3).fit(df)
-        centroids = kmeans.cluster_centers_
+        sum_of_squares = self.calculate_wcss(data)
+        n = self.optimal_number_of_clusters(sum_of_squares)
+        kmeans = KMeans(n_clusters=n).fit(data)      
+        figure1 = plt.Figure(figsize=(8, 4))
+        ax1 = figure1.add_subplot(111)
+        for i in range(0, n):
+            data = p[kmeans.labels_ == i]
+            # print("index" , i , data)
+            # self.df[self.df['kmeans'] == i]['pca'].to_numpy()
+            x = []
+            y = []
+            for i in data:
+                x.append(i[0])
+                # print(i[0])
+                y.append(i[1])
+            # pprint(x)
+            ax1.scatter(x, y)
 
-        # self.df['tfidf'] = self.df['clean_tweet'].pipe(hero.tfidf)
-        # self.df['pca'] = (
-        #     self.df['tfidf'].pipe(hero.pca)
-        # )
-        # self.df['kmeans'] = (
-        #     self.df['tfidf']
-        #     .pipe(hero.kmeans, n_clusters=3)
-        # )
-        # figure1 = plt.Figure(figsize=(8, 4))
-        # ax1 = figure1.add_subplot(111)
-        # for i in range(0, 5):
-        #     data = self.df[self.df['kmeans'] == i]['pca'].to_numpy()
-        #     x = []
-        #     y = []
-        #     for i in data:
-        #         x.append(i[0])
-        #         # print(i[0])
-        #         y.append(i[1])
-        #     # pprint(x)
-        #     ax1.scatter(x, y)
+        bar1 = FigureCanvasTkAgg(figure1, self.root)
+        bar1.get_tk_widget().grid(row=0, column=0)
+        ax1.legend([i for i in range(0, n)])
+        ax1.set_xlabel('')
+        ax1.set_title('Analyse Category tweets')
+    def calculate_wcss(self,data):
+        wcss = []
+        for n in range(2, 6):
+            kmeans = KMeans(n_clusters=n)
+            kmeans.fit(X=data)
+            wcss.append(kmeans.inertia_)
+    
+        return wcss
 
-        # bar1 = FigureCanvasTkAgg(figure1, self.root)
-        # bar1.get_tk_widget().grid(row=0, column=0)
-        # ax1.legend([1, 2, 3, 4, 5])
-        # ax1.set_xlabel('')
-        # ax1.set_title('Analyse Category tweets')
+    def optimal_number_of_clusters(self,wcss):####https://jtemporal.com/kmeans-and-elbow-method/
+        x1, y1 = 2, wcss[0]
+        x2, y2 = 6, wcss[len(wcss)-1]
+
+        distances = []
+        for i in range(len(wcss)):
+            x0 = i+2
+            y0 = wcss[i]
+            numerator = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)
+            denominator = sqrt((y2 - y1)**2 + (x2 - x1)**2)
+            distances.append(numerator/denominator)
+        if distances.index(max(distances)) > 1:
+            return distances.index(max(distances))
+        return 2
 
 
 class Visual:
