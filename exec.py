@@ -184,6 +184,8 @@ class Exec:
         if self.flg_clean == 1:
             self.custom.append('clean_tweet')
         File(list_file, self.name_file, self.custom , self.number_tweet).sum_file()
+        if self.flg_clean == 1:
+            self.custom.remove('clean_tweet')
         self.download.ft_push(self.name_file , 0)
         self.clear_all()
         print("\n\n\n\n\n   finish thread    \n\n\n\n")

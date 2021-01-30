@@ -21,7 +21,13 @@ class File:
                   "cashtags", "link", "retweet", "quote_url", "video", "thumbnail", "near", "geo", "source",
                   "user_rt_id", "user_rt", "retweet_id", "reply_to", "retweet_date", "translate", "trans_src", "trans_dest"]
         try:
-            data_csv = pd.concat( [ pd.read_csv(f) for f in self.list_file] )
+            list_csv = []
+            for f in self.list_file:
+                df = pd.read_csv(f)
+                print("name  ", df.shape, df.shape[0],"\n\n\n")
+                if df.shape[0] > 1:
+                    list_csv.append(df)
+            data_csv = pd.concat(list_csv)
             if len(self.custom) != 22:
                 data_csv = data_csv[self.custom]
             if self.nb >= 0:
