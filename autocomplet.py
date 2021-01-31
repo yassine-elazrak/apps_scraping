@@ -1,11 +1,13 @@
 
 from tkinter import *
 import re
+from pprint import pprint
 
 class AutocompleteEntry(Entry):
     def __init__(self, autocompleteList, *args, **kwargs):
 
         # Listbox length
+        self.ll  = args
         if 'listboxLength' in kwargs:
             self.listboxLength = kwargs['listboxLength']
             del kwargs['listboxLength']
@@ -13,6 +15,7 @@ class AutocompleteEntry(Entry):
             self.listboxLength = 18
 
         # Custom matches function
+        # print('arg', args[1],"n\n\n\n kwargs")
         if 'matchesFunction' in kwargs:
             self.matchesFunction = kwargs['matchesFunction']
             del kwargs['matchesFunction']
@@ -49,11 +52,12 @@ class AutocompleteEntry(Entry):
             words = self.comparison()
             if words:
                 if not self.listboxUp:
-                    self.listbox = Listbox(width=self["width"], height=self.listboxLength)
-                    # self.listbox.bind("<Button-1>", self.selection)
-                    # self.listbox.bind("<Right>", self.selection)####
+                    self.listbox = Listbox(self.ll[0] , width=37, height=2)
+                    self.listbox.bind("<Button-1>", self.selection)
+                    self.listbox.bind("<Right>", self.selection)####
                     self.listbox.bind('<<ListboxSelect>>', self.selection)
-                    self.listbox.place(x=self.winfo_x() + 13, y=531)
+                    self.listbox.grid(row=2 , column=1)
+                    # place(x=self.winfo_x() + 13, y=531)
                     self.listboxUp = True
                 
                 self.listbox.delete(0, END)

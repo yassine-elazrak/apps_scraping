@@ -5,7 +5,7 @@ from functools import reduce
 from pprint import pprint
 import tkinter.font as TkFont
 from tkinter.messagebox import showerror
-from  ll import AutocompleteEntry
+from  autocomplet import AutocompleteEntry
 
 
 class Box:
@@ -62,7 +62,7 @@ class Box:
       'Oleg Copeland (8013)', 'Vladimir Taylor (3846)', 'Sierra Coffey (7052)', 'Holmes Scott (8907)', 'Evelyn Charles (8528)', 'Steel Cooke (5173)', 'Roth Barrett (7977)', 'Justina Slater (3865)', 'Mara Andrews (3113)', 'Ulla Skinner (9342)', 'Reece Lawrence (6074)', 'Violet Clay (6516)', 'Ainsley Mcintyre (6610)', 'Chanda Pugh (9853)', 'Brody Rosales (2662)', 'Serena Rivas (7156)', 'Henry Lang (4439)', 'Clark Olson (636)', 'Tashya Cotton (5795)', 'Kim Matthews (2774)', 'Leilani Good (5360)', 'Deirdre Lindsey (5829)', 'Macy Fields (268)', 'Daniel Parrish (1166)', 'Talon Winters (8469)','@BrunoRafaello', '@RAM_Maroc', 'Hello', 'Bruno,', 'we', 'are', 'very', 'sorry', 'for', 'the', 'time', 'taken', 'on', 'the', 'conclusion', 'of', 'your', 'case.', 'We', 'have', 'reinforced', 'the', 'case', 'to', 'the', 'proper', 'area,', 'so', 'an', 'answer', 'can', 'be', 'provided', 'as', 'promptly', 'as', 'possible.', 'As', 'soon', 'as', 'we', 'receive', 'a', 'feedback,', 'we', 'will', 'get', 'back', 'to', 'you.', 'Thank', 'you.Bonjour', '@RAM_Maroc,', 'Voilà', '128', 'jours', 'que', 'vous', "m'avez", 'promis', 'un', 'dédommagement', 'sous', '4', 'à', '6', 'semaines,', 'serait-il', 'possible', 'de', 'voir', 'mon', 'dossier', 'avancer', '?', 'Pas', 'la', 'peine', 'de', 'me', 'dire', 'de', 'vous', 'contacter', 'en', 'DM,', 'je', "l'ai", 'déjà', 'fait', 'à', 'plusieurs', 'reprises', 'ainsi', 'que', 'par', 'courrielRoyal', 'Air', 'Maroc', '(RAM)', "n'a", 'jamais', 'porté', 'aussi', 'bien', 'son', 'nom:', 'elle', 'rame..@RAM_Maroc', 'Garder', 'mon', 'bagage', ',', 'c’est', 'fini', 'voyager', 'avec', 'vous', 'à', 'tout', 'jamais', ',', 'et', 'je', 'ferai', 'touts', 'pour', 'montrer', 'votre', 'vrai', 'visages', 'par', 'tout', 'dans', 'le', 'monde', ',', '#RAM', 'c’est', 'la', 'pire', 'compagnie', 'aérienne', 'dans', 'le', 'monde@RAM_Maroc', ',', 'service', 'de', 'pire', 'en', 'pire.', 'Vous', 'ne', 'montrez', 'même', 'pas', 'au', 'début', 'du', 'vol', 'comment', 'réagir', 'face', 'à', 'un', 'état', "d'urgence.", 'Et', 'même', 'en', 'cas', "d'urgence", "l'équipement", 'est', 'dégradé.', 'On', 'paie', 'cher', 
         'pour', 'rien', ',', 'pire', "qu'une", 'compagnie', "low-cost.Today's", 'Flight', 'Schedule', '#Gibraltar', '@easyJet', '@British_Airways', '@RAM_Maroc', '#VisitGibraltar', 'https://t.co/4FjSPqUXGb@RAM_Maroc', 'the', 'worst', 'airline', 'the', 'world.@TaoufikBouali', 'Bonsoir,', 'Pour', 'mieux', 'vous', 'assister,' ]
 
-        self.data = AutocompleteEntry(autocompleteList, self.field1, listboxLength=6, width=32)
+        self.data = AutocompleteEntry(autocompleteList, self.field1, listboxLength=6, width=16)
 
         # Input(self.field1, "      enter key search")
         self.data.grid(row=0, column=1, padx=3, pady=5, ipadx=88, ipady=11)########################
