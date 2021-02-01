@@ -2,11 +2,13 @@
 from tkinter import *
 import re
 from pprint import pprint
+from sql import Database
 
 class AutocompleteEntry(Entry):
-    def __init__(self, autocompleteList, *args, **kwargs):
+    def __init__(self,  *args, **kwargs):
 
         # Listbox length
+        self.db =  Database()
         self.ll  = args
         if 'listboxLength' in kwargs:
             self.listboxLength = kwargs['listboxLength']
@@ -26,11 +28,12 @@ class AutocompleteEntry(Entry):
                 
             self.matchesFunction = matches
 
-        
+        autocompleteList = self.db.all()
+        # print()
         Entry.__init__(self, *args, **kwargs)
         self.focus()
 
-        self.autocompleteList = autocompleteList
+        self.autocompleteList = autocompleteList####
         
         self.var = self["textvariable"]
         if self.var == '':

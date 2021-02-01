@@ -3,6 +3,8 @@ import tkinter as tk
 from tkinter.messagebox import showerror
 from app import App
 from tkinter.messagebox import showerror
+import sqlite3
+
 # import urllib2
 
 # def internet_on():
