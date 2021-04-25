@@ -1,3 +1,4 @@
+import urllib3
 from tkinter import *
 import tkinter.font as TkFont
 from tkinter import *
@@ -18,6 +19,7 @@ from tkinter import ttk
 import sys
 import requests
 from clean import Preprocessing
+from urllib.request import urlopen
 
 
 class Run:
@@ -226,6 +228,17 @@ class Exec:
             print("\\n\n\n\n\nend --------  threading         ")
             self.wait_thread(list_file)
 
+    def internet_on(self):
+        try:
+            response = urlopen('https://www.google.com/', timeout=10)
+            print (response)
+            return True
+        except: 
+            return False
+#         http = urllib3.PoolManager()
+# >>> r = http.request('GET', 'http://httpbin.org/robots.txt')
+# >>> r.status
+
     def run(self):
         # if self.start == True:
         #     self.start = False
@@ -233,6 +246,9 @@ class Exec:
 
         if not self.arena.get_all():
             showerror("error running", " not find keys please \ntry again with keys search again")
+            return 
+        if not self.internet_on():
+            showerror("error connection", " Checking network connection not found internet")
             return 
         # if not  self.connection():
         #     return

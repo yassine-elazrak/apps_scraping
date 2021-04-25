@@ -7,6 +7,7 @@ import tkinter.font as TkFont
 from tkinter.messagebox import showerror
 from  autocomplet import AutocompleteEntry
 from sql import  Sinonime
+from urllib.request import urlopen
 
 
 class Box:
@@ -18,8 +19,32 @@ class Box:
         self.index = 0
         self.font_butt = TkFont.Font(
             family='Helvetica', size=10, weight=TkFont.BOLD)
+    # def internet_on(self,doamn='http://216.58.192.142'):
+    #     try:
+    #         http = urllib3.PoolManager()
+    #         r = http.request('GET', doamn)
+    #         print('\n\n:gooole', r.status)
+    #         # urllib3.urlopen( doamn, timeout=1)
+    #         if  r.status == 200:
+    #             return True
+    #         return False
+    #     except: 
+    #         return False
+   
+
+    def internet_on(self):
+        try:
+            response = urlopen('https://www.google.com/', timeout=10)
+            print (response)
+            return True
+        except: 
+            return False
 
     def add(self):
+        
+        if not self.internet_on():
+            showerror("error connection", " Checking network connection not found internet")
+            return 
         word = str(self.data.get()).strip()
         ##############################
         if word and not "      enter key search" in word:

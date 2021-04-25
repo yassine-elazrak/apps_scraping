@@ -71,8 +71,18 @@ class Config_twint:
             showerror("error config twint", message=" parameter not valid")
             return
 
-
+    def internet_on(self):
+        try:
+            response = urlopen('https://www.twitter.com/', timeout=10)
+            print (response)
+            return True
+        except: 
+            return False
+        
     def run(self):
+        if not self.internet_on():
+            showerror("error connection", " Checking network connection not found internet")
+            return 
         twint.run.Search(self.c)
 
 

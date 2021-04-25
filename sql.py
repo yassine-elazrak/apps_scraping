@@ -48,6 +48,19 @@ from os import  path
 import os
 import   shutil
 
+class DI:
+    def __init__(self, index=0,list_file=[]):
+        self.list_file = list_file
+        self.name = ".fi" + '_' + str(index)
+        os.makedirs(self.name, exist_ok=True)
+        # self.name_file =os.path.join(temp_dir, "name_file.csv")
+
+
+    def __enter__(self):
+        return self.name
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        shutil.rmtree(self.name)
 
 class Sinonime:
     def __init__(self,index,word):
@@ -56,27 +69,29 @@ class Sinonime:
         self.index = index
 
     def get_word(self):
-        self.c = twint.Config()
-        self.c.Search = self.keys
-        self.c.Limit = 100
-        self.c.Store_csv = True
-        self.c.Output = str(self.index)+'.csv' 
-        self.c.Hide_output = True
-        twint.run.Search(self.c)
-        self.clean_file()
+        with DI(self.index) as name_dir:
+            self.c = twint.Config()
+            self.c.Search = self.keys
+            self.c.Limit = 100
+            self.c.Store_csv = True
+            self.c.Output =name_dir + "/" + "twt.csv"# str(self.index)+'.csv' 
+            self.c.Hide_output = True
+            twint.run.Search(self.c)
+            self.clean_file(name_dir)
 
 
-    def clean_file(self):
-        name = str(self.index)+'.csv' 
-        if not  path.exists(name):
-            return
+    def clean_file(self , ddir):
+        # name = str(self.index)+'.csv' 
+        # if not  path.exists(ddir):
+        #     return
+        name = ddir + "/" + "twt.csv"
         df  = pd.read_csv(name)
         data = list(map( self.cl,df['tweet'].tolist()))
         # data = set(''.join(data))
         self.add(set(' '.join(data).split()))
-        print("remove  fille", name)
+        # print("remove  fille", name)
         # os.remove(name)
-        shutil.rmtree(name)
+        # shutil.rmtree(name)
 
 
     def cl(self, text):
@@ -119,6 +134,9 @@ class  Database:
             result = cursor.execute(query, parameters)
             conn.commit()
         return result
+
+#Create TABLE IF NOT EXISTS Tweets (id INteger primary KEY, tweet text , date_creat date)
+#insert into Tweets (tweet,date_creat) values('hello','2020-2-2')
 
     def insert(self , word):
         # if self.run_query("SELECT * FROM product WHERE name LIKE ?", ('%'+word+'%',)):
