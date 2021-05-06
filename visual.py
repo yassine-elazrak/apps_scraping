@@ -189,7 +189,7 @@ class load_visual:
         ax1.set_title('Analyse Category tweets')
     def calculate_wcss(self,data):
         wcss = []
-        for n in range(2, 6):
+        for n in range(1, 9):
             kmeans = KMeans(n_clusters=n)
             kmeans.fit(X=data)
             wcss.append(kmeans.inertia_)
@@ -207,9 +207,8 @@ class load_visual:
             numerator = abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1)
             denominator = sqrt((y2 - y1)**2 + (x2 - x1)**2)
             distances.append(numerator/denominator)
-        if distances.index(max(distances)) > 1:
-            return distances.index(max(distances))
-        return 2
+        return distances.index(max(distances)) + 2
+    
 
 
 class Visual:

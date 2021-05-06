@@ -247,9 +247,9 @@ class Exec:
         if not self.arena.get_all():
             showerror("error running", " not find keys please \ntry again with keys search again")
             return 
-        if not self.internet_on():
-            showerror("error connection", " Checking network connection not found internet")
-            return 
+        # if not self.internet_on():
+        #     showerror("error connection", " Checking network connection not found internet")
+        #     return 
         # if not  self.connection():
         #     return
         th = Thread(target=self.task_thread).start()

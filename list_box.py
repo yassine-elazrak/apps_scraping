@@ -32,19 +32,19 @@ class Box:
     #         return False
    
 
-    def internet_on(self):
-        try:
-            response = urlopen('https://www.google.com/', timeout=10)
-            print (response)
-            return True
-        except: 
-            return False
+    # def internet_on(self):
+    #     try:
+    #         response = urlopen('https://www.google.com/', timeout=10)
+    #         print (response)
+    #         return True
+    #     except: 
+    #         return False
 
     def add(self):
         
-        if not self.internet_on():
-            showerror("error connection", " Checking network connection not found internet")
-            return 
+        # if not self.internet_on():
+        #     showerror("error connection", " Checking network connection not found internet")
+        #     return 
         word = str(self.data.get()).strip()
         ##############################
         if word and not "      enter key search" in word:
